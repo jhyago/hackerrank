@@ -1,12 +1,40 @@
-function simpleArraySum(sizeArr, stringArr) {
-    arr = stringArr.split(' ').map(Number)
-    let sum = 0
-    for (let i = 0; i < arr.length; i++) {
-        if(typeof(arr[i] === Number)) {
-            sum += arr[i]
-        }
-    }
-    return sum
+'use strict'
+
+const fs = require('fs')
+
+process.stdin.resume()
+process.stdin.setEncoding('utf-8')
+
+let inputString = ''
+let currentLine = 0
+
+process.stdin.on('data', function(inputStdin) {
+    inputString += inputStdin
+})
+
+process.stdin.on('end', function() {
+    inputString = inputString.split('\n')
+
+    main()
+})
+
+function readLine() {
+    return inputString[currentLine++]
 }
 
-console.log(simpleArraySum(3, '1 3 5'))
+function simpleArraySum(ar) {
+    return ar.reduce((sum, value) => sum + value, 0)
+}
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH)
+
+    const arCount = parseInt(readLine().trim(), 10)
+    const ar = readLine().replace(/\s+$/g, '').split(' ').map(arTemp => parseInt(arTemp, 10))
+
+    const result = simpleArraySum(ar)
+
+    ws.write(result + '\n')
+    ws.end()
+}
+
